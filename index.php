@@ -1,32 +1,8 @@
 <?php
+define('BASE_URI', str_replace('\\', '/', substr(__DIR__, strlen($_SERVER['DOCUMENT_ROOT']))));
+require_once(implode(DIRECTORY_SEPARATOR, ['Core', 'autoload.php']));
+session_start();
+require_once('Core/Core.php');
 
-class Index {
-  private $path;
-
-  public function __construct($path) {
-    $this->path = $path;
-  }
-
-  public function scan_dir() {
-    if($this->path == null) {
-      return "Nothing here...";
-    }
-    $folders = scandir($this->path);
-
-    $i = 0;
-    $infos = [];
-    foreach($folders as $value) {
-      if(is_dir($this->path . "/" . $value)) {
-        $infos[$i]["name"] = $value;
-        $infos[$i]["size"] = filesize($this->path . "/" . $value);
-        $infos[$i]["modification_date"] = filemtime($this->path . "/" . $value);
-        $infos[$i]["type"] = pathinfo($this->path . "/" . $value, PATHINFO_EXTENSION);
-      }
-      $infos["path"] = $_SERVER["DOCUMENT_ROOT"] . $this->path;
-      var_dump($infos);
-    }
-  }
-}
-
-$index = new Index("../.");
-$index->scan_dir();
+$app = new Core\Core();
+$app->run();
