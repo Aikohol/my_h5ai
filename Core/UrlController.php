@@ -28,11 +28,15 @@ class UrlController {
           $infos["files"][$i]["modification_date"] = date("F d Y", filemtime($_SERVER["DOCUMENT_ROOT"] . $this->path . "/" . $value));
           $infos["files"][$i]["link"] = $_SERVER["REQUEST_URI"] . "/" . $value;
           $infos["files"][$i]["type"] = mime_content_type($_SERVER["DOCUMENT_ROOT"] . $this->path . "/" . $value);
+          $infos["files"][$i]["image"] = explode("/", mime_content_type($_SERVER["DOCUMENT_ROOT"] . $this->path . "/" . $value))[0];
         }
         $i++;
       }
       $infos["files-type"] = [
-        "application/json" => "src"
+        "application" => "images/application.svg",
+        "text" => "images/text.svg",
+        "image" => "images/image.svg",
+        "video" => "images/video.svg"
       ];
       require("template.php");
     }
@@ -54,4 +58,16 @@ function humanFileSize($size)
         $fileSize = $size . ' bytes';
     }
     return $fileSize;
+}
+
+
+////
+function detectFileMimeType($filename='')
+{
+    $filename = escapeshellcmd($filename);
+    $command = "file -b --mime-type -m /usr/share/misc/magic {$filename}";
+
+    $mimeType = shell_exec($command);
+
+    return trim($mimeType);
 }

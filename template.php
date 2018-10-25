@@ -19,6 +19,7 @@
         foreach($infos["files"] as $file) {
           ?>
           <li>
+            <img width="35px" src=<?= "http://" . $_SERVER["HTTP_HOST"] ."/my_h5ai/". $infos["files-type"][$file["image"]] ?> />
             <a href="<?= $file["link"] ?>"><?= $file["name"] ?></a>
             <p><?= $file["size"] ?></p>
             <p><?= $file["modification_date"] ?></p>
