@@ -18,9 +18,19 @@ class UrlController {
       $i = 0;
       $infos = [];
       foreach($folders as $value) {
-        if(is_dir($_SERVER["DOCUMENT_ROOT"] . $this->path . "/" . $value)) {
-          $infos["directories"][$i]["name"] = $value;
-          $infos["directories"][$i]["link"] = preg_replace('/([\/])\\1+/', '/', rtrim($_SERVER["REQUEST_URI"] . "/" . $value, '/'));
+        if($value != ".") {
+          if($value == "..") {
+            if(is_dir($_SERVER["DOCUMENT_ROOT"] . $this->path . "/" . $value)) {
+              $infos["directories"][$i]["name"] = "Back";
+              $infos["directories"][$i]["link"] = preg_replace('/([\/])\\1+/', '/', rtrim($_SERVER["REQUEST_URI"] . "/" . $value, '/'));
+            }
+          }
+          else {
+            if(is_dir($_SERVER["DOCUMENT_ROOT"] . $this->path . "/" . $value)) {
+              $infos["directories"][$i]["name"] = $value;
+              $infos["directories"][$i]["link"] = preg_replace('/([\/])\\1+/', '/', rtrim($_SERVER["REQUEST_URI"] . "/" . $value, '/'));
+            }
+          }
         }
         if(is_file($_SERVER["DOCUMENT_ROOT"] . $this->path . "/" . $value)) {
           $infos["files"][$i]["name"] = $value;
@@ -41,7 +51,8 @@ class UrlController {
       require("template.php");
     }
     else {
-      readfile($_SERVER["DOCUMENT_ROOT"].$this->path);
+      $file = readfile($_SERVER["DOCUMENT_ROOT"].$this->path);
+      require("readfile.php");
     }
   }
 }
@@ -60,8 +71,6 @@ function humanFileSize($size)
     return $fileSize;
 }
 
-
-////
 function detectFileMimeType($filename='')
 {
     $filename = escapeshellcmd($filename);

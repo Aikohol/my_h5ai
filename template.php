@@ -2,23 +2,22 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href=<?= "http://" . $_SERVER["HTTP_HOST"] ."/my_h5ai".  "/style.css"?> >
   </head>
   <body>
-    <h2><a href="<?= $infos["directories"][array_rand($infos["directories"])]["link"] . "/../.." ?>">Back</a></h2>
     <ul>
     <?php
       if(!empty($infos["directories"])) {
         foreach($infos["directories"] as $directory) {
           ?>
-          <li><a href="<?= $directory["link"] ?>"><?= $directory["name"] ?></a></li>
+          <li class="directories"><a href="<?= $directory["link"] ?>"><?= $directory["name"] ?></a></li>
           <?php
         }
       }
       if(!empty($infos["files"])) {
         foreach($infos["files"] as $file) {
           ?>
-          <li>
+          <li class="files">
             <img width="35px" src=<?= "http://" . $_SERVER["HTTP_HOST"] ."/my_h5ai/". $infos["files-type"][$file["image"]] ?> />
             <a href="<?= $file["link"] ?>"><?= $file["name"] ?></a>
             <p><?= $file["size"] ?></p>
@@ -29,6 +28,6 @@
         }
       }
     ?>
-    <ul>
+  </ul>
   </body>
 </html>
